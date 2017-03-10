@@ -1,12 +1,27 @@
 var toDoList = [];
+var toDoListHTML = document.getElementById('to-do-list');
 
-function addListItem(userInput) {
-  var newListItem = {
-    title: userInput,
-    status: 'active'
-  }
-  toDoList.push(newListItem);
+function ListItemObj(userInput) {
+  this.title = userInput;
+  this.status = 'new';
+  this.addListItemToArr = function() {
+                            toDoList.push(this);
+                          };
+  this.addListItemToDOM = function() {
+                            if(userInput){
+                              var newLi = document.createElement('li');
+                              newLi.innerHTML = userInput;
+                              toDoListHTML.appendChild(newLi);
+                            }
+                          };
 }
+
+document.getElementById('user-input-submit').addEventListener('click', function(){
+  var userInput = document.getElementById('user-input').value;
+  var newListItemObj = new ListItemObj(userInput);
+  newListItemObj.addListItemToArr();
+  newListItemObj.addListItemToDOM();
+});
 
 function deleteListItem(titleToFind) {
   for(var i = 0; i < toDoList.length; i++) {
@@ -23,12 +38,3 @@ function changeListItem(changedText, titleToFind) {
     }
   }
 }
-
-document.getElementById('user-input-submit').addEventListener('click', function(){
-  var toDoListHTML = document.getElementById('to-do-list');
-  var userInput = document.getElementById('user-input').value;
-  var newLi = document.createElement('li');
-  addListItem(userInput);
-  newLi.innerHTML = userInput;
-  toDoListHTML.appendChild(newLi);
-})
