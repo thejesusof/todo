@@ -7,28 +7,40 @@ function ListItemObj(userInput) {
   this.addListItemToArr = function() {
                             toDoList.push(this);
                           };
-  this.addListItemToDOM = function() {
-                            if(userInput){
-                              var newLi = document.createElement('li');
-                              newLi.innerHTML = userInput;
-                              toDoListHTML.appendChild(newLi);
-                            }
-                          };
+  this.render = function() {
+                  var newLi = document.createElement('div');
+                  newLi.className = "list-item";
+                  newLi.innerHTML = "<span class=user-input-span>"+ userInput + "</span>" + "<button class=delete-list-item>Delete</button>";
+                  toDoListHTML.appendChild(newLi);
+                };
+  this.deleteListItemFromDOM = function() {
+                                  var deleteListItemBtns = document.getElementsByClassName("delete-list-item");
+                                  for(var i = 0; i < deleteListItemBtns.length; i++) {
+                                  	deleteListItemBtns[i].addEventListener('click', function(){
+                                  	  var titleToFind = this.parentNode.parentNode.getElementsByTagName("span")[0].innerHTML;
+                                  	  deleteListItemFromObj(titleToFind);
+                                  		this.parentNode.parentNode.removeChild(this.parentNode);
+                                   });
+                                  }
+                                };
 }
 
 document.getElementById('user-input-submit').addEventListener('click', function(){
   var userInput = document.getElementById('user-input').value;
-  var newListItemObj = new ListItemObj(userInput);
-  newListItemObj.addListItemToArr();
-  newListItemObj.addListItemToDOM();
+  if(userInput){
+    var newListItemObj = new ListItemObj(userInput);
+    newListItemObj.addListItemToArr();
+    newListItemObj.render();
+    newListItemObj.deleteListItemFromDOM();
+  }
 });
 
-function deleteListItem(titleToFind) {
+function deleteListItemFromObj(titleToFind) {
   for(var i = 0; i < toDoList.length; i++) {
-    if(toDoList[i].title == titleToFind) {
-      toDoList.splice(i, 1);
+      if(toDoList[i].title == titleToFind) {
+        toDoList.splice(i, 1);
+      }
     }
-  }
 }
 
 function changeListItem(changedText, titleToFind) {
