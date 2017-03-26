@@ -29,11 +29,17 @@ var toDoList = {
 function ListItemObj(userInput) {
   this.title = userInput;
   this.status = 'new';
+  this.changeInput = undefined;
+  this.newLi = undefined;
   this.render = function() {
-                  var newLi = document.createElement('div');
-                  newLi.className = "list-item";
-                  newLi.innerHTML = "<span class=user-input-span>"+ userInput + "</span>" + "<button class=delete-list-item>Delete</button>";
-                  toDoListHTML.appendChild(newLi);
+                  this.newLi = document.createElement('div');
+                  this.changeInput = document.createElement('div');
+                  this.newLi.className = "list-item";
+                  this.changeInput.className = "change-input";
+                  this.changeInput.innerHTML = "<input type=text>" + "<button class=change-list-item>Change</button>";
+                  this.newLi.innerHTML = "<div class=user-input-div>" +  "<span class=user-input-span>"+ userInput + "</span>" + "<button class=delete-list-item>Delete</button>" + "</div";
+                  this.newLi.appendChild(this.changeInput);
+                  toDoListHTML.appendChild(this.newLi);
                 };
   this.delete = function() {
                         var deleteListItemBtns = document.getElementsByClassName("delete-list-item");
@@ -44,7 +50,17 @@ function ListItemObj(userInput) {
                             this.parentNode.parentNode.removeChild(this.parentNode);
                          });
                         }
-                      }
+                      };
+  this.change = function() {
+    var userInputSpans = document.getElementsByClassName("user-input-span");
+    var _this  = this;
+    for(var j = 0; j < userInputSpans.length; j++) {
+      userInputSpans[j].addEventListener("dblclick", function() {
+        this.parentNode.style.display = 'none';
+        _this.changeInput.style.display = 'block';
+      });
+    }
+  };
 }
 
 document.getElementById('user-input-submit').addEventListener('click', function(){
@@ -53,6 +69,7 @@ document.getElementById('user-input-submit').addEventListener('click', function(
     var listItem = new ListItemObj(userInput);
     toDoList.add(listItem);
     toDoList.render();
+    listItem.change();
     listItem.delete();
   }
 });
