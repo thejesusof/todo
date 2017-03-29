@@ -28,10 +28,10 @@ function ListItemObj(userInput, id) {
   this.title = userInput;
   this.status = 'new';
   this.render = function() {
-  				  var _this = this;
+  				        var _this = this;
                   this.newLi = document.createElement('div');
                   this.changeInput = document.createElement('div');
-				  this.newLi.className = "list-item";
+				          this.newLi.className = "list-item";
                   this.changeInput.className = "change-input";
                   this.changeInput.innerHTML = "<input type=text>" + "<button id=change-" + this.id + ">Change</button>";
                   this.newLi.innerHTML = "<div class=user-input-div>" +  "<span id=user-input-span-" + this.id + ">" + userInput + "</span>" + "<button class=delete-list-item>Delete</button>" + "</div";
@@ -44,8 +44,8 @@ function ListItemObj(userInput, id) {
                   document.getElementById("change-" + this.id).addEventListener("click", function() {
                   	var changedUserInput = _this.changeInput.children[0].value;
                   	var changedUserInputSpan = document.getElementById("user-input-span-" + _this.id);
-                  	changedUserInputSpan.innerHTML = '';
                   	changedUserInputSpan.innerHTML = changedUserInput;
+                     _this.title = changedUserInput;
                   	this.parentNode.style.display = 'none';
                   	changedUserInputSpan.parentNode.style.display = 'block';
                   });
