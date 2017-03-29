@@ -1,28 +1,24 @@
-var toDoListHTML = document.getElementById('to-do-list');
 var SEQUENCE = 0;
+var toDoListHTML = document.getElementById('to-do-list');
 
 var toDoList = {
-  
-  toDoListArr: [],
-  
+  list: [],
   add: function(listItem) {
-        this.toDoListArr.push(listItem);
+        this.list.push(listItem);
       },
-      
   render: function() {
             toDoListHTML.innerHTML = '';
-            for(var i = 0; i < this.toDoListArr.length; i++) {
-              var listItemObj = this.toDoListArr[i];
-              listItemObj.render();
-            }
+            this.list.forEach(function(item, i, arr) {
+            	item.render();
+            });
           },
   
   delete: function(titleToFind) {
-            for(var i = 0; i < this.toDoListArr.length; i++) {
-              if(this.toDoListArr[i].title == titleToFind) {
-                this.toDoListArr.splice(i, 1);
-              }
-            }
+  			this.list.forEach(function(item, i, arr) {
+  				if(item.title == titleToFind) {
+	                toDoList.list.splice(item, 1);
+	             }
+  			});
           }
 };
 
