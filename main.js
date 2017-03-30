@@ -8,17 +8,17 @@ var toDoList = {
       },
   render: function() {
             toDoListHTML.innerHTML = '';
-            this.list.forEach(function(item, i, arr) {
+            this.list.forEach(function(item) {
             	item.render();
             });
           },
-  
+
   delete: function(titleToFind) {
-  			this.list.forEach(function(item, i, arr) {
-  				if(item.title == titleToFind) {
-	                toDoList.list.splice(item, 1);
-	             }
-  			});
+      			this.list.forEach(function(item) {
+      				if(item.title == titleToFind) {
+    	          toDoList.list.splice(item, 1);
+    	        }
+      			});
           }
 };
 
@@ -27,39 +27,43 @@ function ListItemObj(userInput, id) {
   this.id = id,
   this.title = userInput;
   this.status = 'new';
-  this.render = function() {
-  				        var _this = this;
-                  this.newLi = document.createElement('div');
-                  this.changeInput = document.createElement('div');
-				          this.newLi.className = "list-item";
-                  this.changeInput.className = "change-input";
-                  this.changeInput.innerHTML = "<input type=text>" + "<button id=change-" + this.id + ">Change</button>";
-                  this.newLi.innerHTML = "<div class=user-input-div>" +  "<span id=user-input-span-" + this.id + ">" + userInput + "</span>" + "<button class=delete-list-item>Delete</button>" + "</div";
-                  this.newLi.appendChild(this.changeInput);
-                  toDoListHTML.appendChild(this.newLi);
-                  document.getElementById("user-input-span-" + this.id).addEventListener("dblclick", function() {
-                  	this.parentNode.style.display = 'none';
-                  	_this.changeInput.style.display = 'block';
-                  });
-                  document.getElementById("change-" + this.id).addEventListener("click", function() {
-                  	var changedUserInput = _this.changeInput.children[0].value;
-                  	var changedUserInputSpan = document.getElementById("user-input-span-" + _this.id);
-                  	changedUserInputSpan.innerHTML = changedUserInput;
-                     _this.title = changedUserInput;
-                  	this.parentNode.style.display = 'none';
-                  	changedUserInputSpan.parentNode.style.display = 'block';
+  this.addToDOM = function(){
+    this.newLi = document.createElement('div');
+    this.changeInput = document.createElement('div');
+    this.newLi.className = "list-item";
+    this.changeInput.className = "change-input";
+    this.changeInput.innerHTML = "<input type=text>" + "<button id=change-" + this.id + ">Change</button>";
+    this.newLi.innerHTML = "<div class=user-input-div>" +  "<span id=user-input-span-" + this.id + ">" + userInput + "</span>" + "<button id=delete-list-item-" + this.id + ">Delete</button>" + "</div";
+    this.newLi.appendChild(this.changeInput);
+    toDoListHTML.appendChild(this.newLi);
+  }
+  this.change = function() {
+    var _this = this;
+    document.getElementById("user-input-span-" + this.id).addEventListener("dblclick", function() {
+      this.parentNode.style.display = 'none';
+      _this.changeInput.style.display = 'block';
+    });
+    document.getElementById("change-" + this.id).addEventListener("click", function() {
+      var changedUserInput = _this.changeInput.children[0].value;
+      var changedUserInputSpan = document.getElementById("user-input-span-" + _this.id);
+      changedUserInputSpan.innerHTML = changedUserInput;
+       _this.title = changedUserInput;
+      this.parentNode.style.display = 'none';
+      changedUserInputSpan.parentNode.style.display = 'block';
+    });
+  }
+  this.delete = function() {
+                  document.getElementById("delete-list-item-" + this.id).addEventListener('click', function() {
+                    var titleToFind = this.parentNode.getElementsByTagName("span")[0].innerHTML;
+                    toDoList.delete(titleToFind);
+                    this.parentNode.parentNode.removeChild(this.parentNode);
                   });
                 };
-  this.delete = function() {
-                        var deleteListItemBtns = document.getElementsByClassName("delete-list-item");
-                        for(var i = 0; i < deleteListItemBtns.length; i++) {
-                          deleteListItemBtns[i].addEventListener('click', function(){
-                            var titleToFind = this.parentNode.getElementsByTagName("span")[0].innerHTML;
-                            toDoList.delete(titleToFind);
-                            this.parentNode.parentNode.removeChild(this.parentNode);
-                         });
-                        }
-                      };
+  this.render = function() {
+  				       this.addToDOM();
+                 this.change();
+                 this.delete();
+                };
 }
 
 document.getElementById('user-input-submit').addEventListener('click', function(){
@@ -68,7 +72,6 @@ document.getElementById('user-input-submit').addEventListener('click', function(
     var listItem = new ListItemObj(userInput, SEQUENCE);
     SEQUENCE += 1;
     toDoList.add(listItem);
-    toDoList.render();
-    listItem.delete();
+    toDoList.render()
   }
 });
