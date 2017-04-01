@@ -1,24 +1,26 @@
 var SEQUENCE = 0;
-var toDoListHTML = document.getElementById('to-do-list');
 
 var toDoList = {
   list: [],
+  toDoListHTML: document.getElementById('to-do-list'),
+
   add: function(listItem) {
         this.list.push(listItem);
       },
   render: function() {
-            toDoListHTML.innerHTML = '';
+            this.toDoListHTML.innerHTML = '';
             this.list.forEach(function(item) {
             	item.render();
             });
           },
-
-  delete: function(titleToFind) {
-      			this.list.forEach(function(item) {
-      				if(item.title == titleToFind) {
-    	          toDoList.list.splice(item, 1);
+  delete: function(id) {
+            var _this = this;
+      			this.list.forEach(function(item, i) {
+      				if(item.id == id) {
+    	          _this.list.splice(i, 1);
     	        }
       			});
+            this.render();
           }
 };
 
@@ -35,7 +37,7 @@ function ListItemObj(userInput, id) {
     this.changeInput.innerHTML = "<input type=text>" + "<button id=change-" + this.id + ">Change</button>";
     this.newLi.innerHTML = "<div class=user-input-div>" +  "<span id=user-input-span-" + this.id + ">" + userInput + "</span>" + "<button id=delete-list-item-" + this.id + ">Delete</button>" + "</div";
     this.newLi.appendChild(this.changeInput);
-    toDoListHTML.appendChild(this.newLi);
+    toDoList.toDoListHTML.appendChild(this.newLi);
   }
   this.change = function() {
     var _this = this;
@@ -51,19 +53,15 @@ function ListItemObj(userInput, id) {
       this.parentNode.style.display = 'none';
       changedUserInputSpan.parentNode.style.display = 'block';
     });
-  }
-  this.delete = function() {
-                  document.getElementById("delete-list-item-" + this.id).addEventListener('click', function() {
-                    var titleToFind = this.parentNode.getElementsByTagName("span")[0].innerHTML;
-                    toDoList.delete(titleToFind);
-                    this.parentNode.parentNode.removeChild(this.parentNode);
-                  });
-                };
+  },
   this.render = function() {
-  				       this.addToDOM();
-                 this.change();
-                 this.delete();
-                };
+   var _this = this;
+   this.addToDOM();
+   this.change();
+   document.getElementById("delete-list-item-" + this.id).addEventListener('click', function() {
+     toDoList.delete(_this.id);
+   });
+  };
 }
 
 document.getElementById('user-input-submit').addEventListener('click', function(){
