@@ -35,11 +35,11 @@ function ListItemObj(userInput, id) {
     this.newLi.className = "list-item";
     this.changeInput.className = "change-input";
     this.changeInput.innerHTML = "<input type=text>" + "<button id=change-" + this.id + ">Change</button>";
-    this.newLi.innerHTML = "<div class=user-input-div>" +  "<span id=user-input-span-" + this.id + ">" + userInput + "</span>" + "<button id=delete-list-item-" + this.id + ">Delete</button>" + "</div";
+    this.newLi.innerHTML = "<div class=user-input-div>" +  "<span id=user-input-span-" + this.id + ">" + this.title + "</span>" + "<button id=delete-list-item-" + this.id + ">Delete</button>" + "</div";
     this.newLi.appendChild(this.changeInput);
     toDoList.toDoListHTML.appendChild(this.newLi);
   }
-  this.change = function() {
+  this.addListeners = function(){
     var _this = this;
     document.getElementById("user-input-span-" + this.id).addEventListener("dblclick", function() {
       this.parentNode.style.display = 'none';
@@ -47,21 +47,17 @@ function ListItemObj(userInput, id) {
     });
     document.getElementById("change-" + this.id).addEventListener("click", function() {
       var changedUserInput = _this.changeInput.children[0].value;
-      var changedUserInputSpan = document.getElementById("user-input-span-" + _this.id);
-      changedUserInputSpan.innerHTML = changedUserInput;
-       _this.title = changedUserInput;
-      this.parentNode.style.display = 'none';
-      changedUserInputSpan.parentNode.style.display = 'block';
+      _this.title = changedUserInput;
+      toDoList.render();
     });
-  },
+    document.getElementById("delete-list-item-" + this.id).addEventListener('click', function() {
+      toDoList.delete(_this.id);
+    });
+  }
   this.render = function() {
-   var _this = this;
    this.addToDOM();
-   this.change();
-   document.getElementById("delete-list-item-" + this.id).addEventListener('click', function() {
-     toDoList.delete(_this.id);
-   });
-  };
+   this.addListeners();
+  }
 }
 
 document.getElementById('user-input-submit').addEventListener('click', function(){
