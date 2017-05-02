@@ -35,7 +35,7 @@ function ListItemObj(userInput, id) {
     this.newLi.className = "list-item";
     this.changeInput.className = "change-input";
     this.changeInput.innerHTML = "<input type=text>" + "<button id=change-" + this.id + ">Change</button>";
-    this.newLi.innerHTML = "<div class=user-input-div>" +  "<span id=user-input-span-" + this.id + ">" + this.title + "</span>" + "<button id=delete-list-item-" + this.id + ">Delete</button>" + "</div";
+    this.newLi.innerHTML = "<div class=user-input-div>" + "<button class=done-btn id=status-done-" + this.id + ">Done</button>" + "<span class=" + this.status +  " id=user-input-span-" + this.id + ">" + this.title + "</span>" + "<button class=del-btn id=delete-list-item-" + this.id + ">Delete</button>" + "</div";
     this.newLi.appendChild(this.changeInput);
     toDoList.toDoListHTML.appendChild(this.newLi);
   }
@@ -53,6 +53,10 @@ function ListItemObj(userInput, id) {
     document.getElementById("delete-list-item-" + this.id).addEventListener('click', function() {
       toDoList.delete(_this.id);
     });
+    document.getElementById("status-done-" + this.id).addEventListener('click', function() {
+      _this.status = 'done';
+      document.getElementById("user-input-span-" + _this.id).className = 'done';
+    });
   }
   this.render = function() {
    this.addToDOM();
@@ -66,6 +70,6 @@ document.getElementById('user-input-submit').addEventListener('click', function(
     var listItem = new ListItemObj(userInput, SEQUENCE);
     SEQUENCE += 1;
     toDoList.add(listItem);
-    toDoList.render()
+    toDoList.render();
   }
 });

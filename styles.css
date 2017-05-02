@@ -1,18 +1,69 @@
+* {
+	outline: none;
+}
+
 body {
 	box-sizing: border-box;
 	margin: 0;
 }
 
+header {
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+
 h1 {
 	text-transform: uppercase;
-	margin: 0 auto;
-	width: 20%;
+	margin: 0;
+	text-align: center;
 }
 
 ul {
 	list-style: none;
+	padding: 0;
 }
+
+section {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+button {
+	cursor: pointer;
+}
+
+span {
+	margin-right: 15px;
+	margin-left: 15px;
+	font-size: 20px;
+}
+
 
 .change-input {
 	display: none;
+}
+
+.done {
+	text-decoration: line-through;
+	color: #cccccc;
+}
+
+.done-btn {
+	width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    background: #BDECB6;
+}
+
+.del-btn {
+	width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    background: #E32636;
+}
+
+.user-input-div {
+	margin-bottom: 10px;
 }
